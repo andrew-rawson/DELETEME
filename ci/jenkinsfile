@@ -1,0 +1,22 @@
+pipeline {
+    agent {
+        label 'dockerbuild'
+    }
+    environment {
+        JOB_BRANCH = "${env.BRANCH}"
+    }
+    stages {
+        stage('Process Payload') {
+            steps {
+                // If refs/heads/main was pushed, this will echo "Full Ref: refs/heads/main"
+                echo "Full Ref: ${env.JOB_BRANCH}"
+                
+                // Optional: Clean it up to just the branch name
+                script {
+                    def branch = env.BRANCH.replace('refs/heads/', '')
+                    echo "Clean Branch Name: ${branch}"
+                }
+            }
+        }
+    }
+}
